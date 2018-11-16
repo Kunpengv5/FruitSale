@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--1、使用context:property-placeholder配置，读取工程中的静态属性文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--2、包扫描-->
+    <context:component-scan base-package="com.fruitsalesplatform.dao,com.fruitsalesplatform.service"/>
+
+    <!--3、配置数据源-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--连接池中保存的最大连接数，默认为15-->
+        <property name="maxPoolSize" value="${c3p0.pool.maxPoolSize}"/>
+        <!--连接池中保存的最小连接数，默认为15-->
+        <property name="minPoolSize" value="${c3p0.pool.minPoolSize}"/>
+        <!--初始化创建的连接池连接数，在min和max中间取值-->
+        <property name="initialPoolSize" value="${c3p0.pool.initialPoolSize}"/>
+        <!--定义从数据库获取新连接失败后，重新尝试获取的次数，默认30次-->
+        <property name="acquireIncrement" value="${c3p0.pool.acquireIncrement}"/>
+    </bean>
+
+    <!--4、持久化操作需要sqlSession，来自spring和mybatis的整合包-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--指定别名-->
+        <property name="typeAliasesPackage" value="com.fruitsalesplatform.entity"/>
+        <property name="mapperLocations" value="classpath:com.fruitsalesplatform.dao/*.xml"/>
+        <property name="configLocation" value="classpath:conf/mybatis-config.xml"/>
+    </bean>
+
+    <!--自动映射-->
+    <!--使用Spring自己的Mapper批量扫描器类，用于扫描Mapper代理接口，取代了SqlMapConfig.xml中的配置-->
+    <!--Mapper扫描配置文件，需要两个参数 1、包的路径 2、sqlSessionFactory对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.fruitsalesplatform.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--5、事务管理-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="find*" read-only="false"/>
+            <tx:method name="get*" read-only="false"/>
+            <tx:method name="view*" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--绑定一下切面的范围及事务的处理方式-->
+    <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* com.fruitsalesplatform.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+</beans>

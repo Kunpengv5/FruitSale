@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fruitsalesplatform.dao.UserDao">
+    <resultMap id="resultMap" type="com.fruitsalesplatform.entity.UserEntity">
+        <id property="userid" column="userid" javaType="java.lang.String"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="username"/>
+        <result property="telphone" column="username"/>
+    </resultMap>
+
+    <select id="get" resultMap="resultMap" parameterType="string">
+        select * from user
+        where userid = #{userid}
+    </select>
+
+    <select id="find" resultMap="resultMap" parameterType="map">
+        select * from user
+        where 1=1
+        <if test="username != null"> and username=#{username}</if>
+        <if test="password != null"> and password=#{password}</if>
+        <if test="name != null"> and name like #{name}</if>
+        <if test="telphone != null"> and telphone=#{telphone}</if>
+    </select>
+
+
+</mapper>

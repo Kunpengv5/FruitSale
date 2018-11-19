@@ -24,9 +24,9 @@
 
     <!--sql片段-->
     <sql id="query_retailer_where">
-        <if test="name!=null" >and name like '%${name}%'</if>
-        <if test="address!=null">and address like #{address}</if>
-        <if test="status!=null">and status like #{status}</if>
+        <if test="name!=null and name!=''">and name like '%${name}%'</if>
+        <if test="address!=null">and address like '%${address}%'</if>
+        <if test="status!=null">and status like '%${status}%'</if>
         <if test="telphone!=null">and telphone = #{telphone}</if>
         <if test="createtime!=null">
             and createtime = DATE_FORMAT(#{createtime},'%Y-%m-%d %H:%i:%s')

@@ -27,6 +27,11 @@ public class RetailerController extends BaseController{
                        HttpServletRequest request, HttpServletResponse response){
         Map<String,String> map = new HashMap<String,String >();
         map.put("name",retailer.getName());
+        map.put("address",retailer.getAddress());
+        map.put("telphone",retailer.getTelphone());
+        map.put("status",retailer.getStatus().toString());
+//        map.put("telphone",retailer.getCreatetime());
+
         List<RetailerEntity> retailerList = retailerService.find(map);
         model.addAttribute("list",retailerList);
 

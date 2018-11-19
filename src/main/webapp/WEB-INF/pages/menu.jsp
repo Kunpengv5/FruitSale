@@ -11,5 +11,6 @@
 </div>
 <div style="background-color:#cccccc">
      <span style="margin-left: 10px;">欢迎您，${sessionScope.user.name}   </span>
+    <%--获取根路径后，指定每次点击退出按钮式，跳转的处理controller路径--%>
      <span style="margin-right: auto"><a href="${pageContext.request.contextPath}/user/logout.action">退出</a>  </span>
 </div>

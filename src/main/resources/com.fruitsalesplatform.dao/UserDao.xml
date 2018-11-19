@@ -4,20 +4,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fruitsalesplatform.dao.UserDao">
+
     <resultMap id="resultMap" type="com.fruitsalesplatform.entity.UserEntity">
+        <!--主键-->
         <id property="userid" column="userid" javaType="java.lang.String"/>
+        <!--一般的属性-->
         <result property="username" column="username"/>
         <result property="password" column="password"/>
-        <result property="name" column="username"/>
-        <result property="telphone" column="username"/>
+        <result property="name" column="name"/>
+        <result property="telphone" column="telphone"/>
     </resultMap>
 
-    <select id="get" resultMap="resultMap" parameterType="string">
+    <!--查询单个的用户-->
+    <select id="get" resultMap="resultMap" parameterType="java.lang.String">
         select * from user
         where userid = #{userid}
     </select>
 
-    <select id="find" resultMap="resultMap" parameterType="map">
+    <!---->
+    <select id="find" resultMap="resultMap" parameterType="java.util.Map">
         select * from user
         where 1=1
         <if test="username != null"> and username=#{username}</if>
@@ -25,6 +30,18 @@
         <if test="name != null"> and name like #{name}</if>
         <if test="telphone != null"> and telphone=#{telphone}</if>
     </select>
+
+    <insert id="insert" parameterType="UserEntity">
+        insert into user
+        (userid, username, password, name, telphone)
+        values
+        ( #{userid,jdbcType=VARCHAR},
+          #{username,jdbcType=VARCHAR},
+          #{password,jdbcType=VARCHAR},
+          #{name,jdbcType=VARCHAR},
+          #{telphone,jdbcType=VARCHAR}
+          )
+    </insert>
 
 
 </mapper>

@@ -2,14 +2,16 @@ package com.fruitsalesplatform.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import com.fruitsalesplatform.entity.PageEntity;
 
 /**
  * @author dukunpeng
  * @date 2018/11/9 14:31
  */
+
 @Entity
 @Table(name = "retailer", schema = "fruit_manage", catalog = "")
-public class RetailerEntity {
+public class  RetailerEntity extends PageEntity {
     private String retailerid;
     private String name;
     private String telphone;

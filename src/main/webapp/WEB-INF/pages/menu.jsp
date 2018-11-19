@@ -11,5 +11,5 @@
 </div>
 <div style="background-color:#cccccc">
      <span style="margin-left: 10px;">欢迎您，${sessionScope.user.name}   </span>
-     <span style="margin-right: auto"><a href="logout.action">退出</a>  </span>
+     <span style="margin-right: auto"><a href="${pageContext.request.contextPath}/user/logout.action">退出</a>  </span>
 </div>

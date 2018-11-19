@@ -33,13 +33,7 @@ public class RetailerController extends BaseController{
         return "/retailer/retailerHome.jsp";
     }
 
-    @RequestMapping(value = "/logout")
-    public String logout(HttpServletRequest request){
-//        request.getSession().getAttribute("user");
-        request.getSession().removeAttribute("user");
-        request.getSession().invalidate();
-        return "/login.jsp";
-    }
+
 
 
 

@@ -87,4 +87,13 @@ public class UserController {
 
        }
     }
+
+    @RequestMapping(value = "/logout")
+    public String logout(HttpServletRequest request){
+//        request.getSession().getAttribute("user");
+        request.getSession().removeAttribute("user");
+        request.getSession().invalidate();
+        return "/login.jsp";
+    }
+
 }

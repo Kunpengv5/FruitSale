@@ -1,7 +1,8 @@
 package com.fruitsalesplatform.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
+
 import com.fruitsalesplatform.entity.PageEntity;
 
 /**
@@ -9,15 +10,15 @@ import com.fruitsalesplatform.entity.PageEntity;
  * @date 2018/11/9 14:31
  */
 
-@Entity
-@Table(name = "retailer", schema = "fruit_manage", catalog = "")
+/*@Entity
+@Table(name = "retailer", schema = "fruit_manage", catalog = "")*/
 public class  RetailerEntity extends PageEntity {
     private String retailerid;
     private String name;
     private String telphone;
     private String address;
     private Integer status;
-    private Timestamp createtime;
+    private String createtime;
 
     @Id
     @Column(name = "retailerid")
@@ -71,15 +72,15 @@ public class  RetailerEntity extends PageEntity {
 
     @Basic
     @Column(name = "createtime")
-    public Timestamp getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -105,5 +106,5 @@ public class  RetailerEntity extends PageEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (createtime != null ? createtime.hashCode() : 0);
         return result;
-    }
+    }*/
 }

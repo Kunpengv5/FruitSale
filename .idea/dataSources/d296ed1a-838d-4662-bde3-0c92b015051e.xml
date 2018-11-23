@@ -937,6 +937,7 @@
       <Engine>InnoDB</Engine>
     </table>
     <table id="238" parent="2" name="user">
+      <Comment>用户名</Comment>
       <Engine>InnoDB</Engine>
     </table>
     <column id="239" parent="233" name="accessoryid">

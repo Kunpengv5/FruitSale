@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html >
   <head>
@@ -22,7 +23,9 @@
     </style>
         
     <script type="text/javascript" 
-  		src="${pageContext.request.contextPath }/js/jquery-1.4.4.min.js"></script>  
+  		src="${pageContext.request.contextPath }/js/jquery-1.4.4.min.js">
+	</script>
+
     <script type="text/javascript">
        function init(){
            var countNumber = document.getElementById("countNumber").value;
@@ -147,7 +150,7 @@
 		    }
 	   }
 
-	   function checkAddRetailer(){
+	   function checkAddRetailer(event){
            if($("#addName").val()==null||$("#addName").val()==""){
                alert("用户名不能为空！");
                return false;
@@ -156,12 +159,12 @@
                alert("手机号不能为空！");
                return false;
            }
-           var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
-           if(!myreg.test($("#addTelphone").val())) 
-           { 
-               alert("请输入有效的手机号码！"); 
-               return false; 
-           } 
+           // var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+           // if(!myreg.test($("#addTelphone").val()))
+           // {
+           //     alert("请输入有效的手机号码！");
+           //     return false;
+           // }
            if($("#addAddress").val()==null||$("#addAddress").val()==""){
                alert("地址不能为空！");
                return false;
@@ -196,7 +199,8 @@
 		        手机：<input type="text" id="editTelphone" name="telphone" style="width:120px"/><br/>
 		        地址：<input type="text" id="editAddress" name="address" style="width:120px"/><br/>
 		        状态：<select id="eStatus" onchange="changeEditStatus()">
-		        <option value="1">启用</option>
+			 	<option value="-1">全部</option>
+			 	<option value="1">启用</option>
 		        <option value="0">停用</option>
 		     </select><br/>
 		     <input type="hidden" name="retailerid" id="retailerid"/>
@@ -208,6 +212,7 @@
 	     </form>
 	    </div>
   </div>
+
   <form id="listForm" action="list.action" method="post">
         姓名：<input type="text" name="name" style="width:120px"/> 
         手机：<input type="text" name="telphone" style="width:120px"/>
@@ -230,6 +235,7 @@
 	 <input type="hidden" name="sumPageNumber" id="sumPageNumber" value="${sumPageNumber}"/>
 	 <input type="hidden" name="countNumber" id="countNumber" value="${countNumber}"/>
   </form>
+
   <hr style="margin-top: 10px;"/> 
   <button onclick="showAddMask('true')" style="background-color:#173e65;color:#ffffff;width:70px;">添加</button>
   <c:if test="${list!=null}">
@@ -250,7 +256,11 @@
 	               <font color="red">停用</font>
 	           </c:if>
 	       </td>
-	       <td>${item.createtime}</td>
+			 <td>${item.createtime}</td>
+
+		 <%--<fmt:parseDate value="${item.createtime}" var="date" pattern="yyyyMMddHHmmss"/>--%>
+			   <%--<fmt:formatDate value="${date}" pattern="yyyy-MM-dd"/></td>--%>
+
 	       <td>
 	       		<a onclick="editRetailer('${item.retailerid}')">编辑</a>|
 	       		<a onclick="deleteRetailer('${item.retailerid}','${item.name }')">删除</a>
@@ -265,7 +275,7 @@
 	    </c:forEach>  
 	    </table> 
    </c:if>
-   <c:if test="${list==null}">
+   <c:if test="${list.size()<0 or list==null}">
        <b>搜索结果为空！</b>
    </c:if>
    <div style="margin-top: 10px;">

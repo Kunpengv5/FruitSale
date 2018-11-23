@@ -13,7 +13,7 @@
         <result property="telphone" column="telphone"/>
         <result property="address" column="address"/>
         <result property="status" column="status"/>
-        <result property="createtime" column="createtime"/>
+        <result property="createtime" column="createtime" />
     </resultMap>
 
     <!--查询单个营销商-->
@@ -24,12 +24,12 @@
 
     <!--sql片段-->
     <sql id="query_retailer_where">
-        <if test="name!=null and name!=''">and name like '%${name}%'</if>
+        <if test="name!=null">and name like '%${name}%'</if>
         <if test="address!=null">and address like '%${address}%'</if>
         <if test="status!=null">and status like '%${status}%'</if>
         <if test="telphone!=null">and telphone = #{telphone}</if>
         <if test="createtime!=null">
-            and createtime = DATE_FORMAT(#{createtime},'%Y-%m-%d %H:%i:%s')
+            and createtime = DATE_FORMAT(#{createtime},'%Y-%m-%d %H:%i:%S')
         </if>
         <if test="starttime != null"> <![CDATA[ and createtime >= to_date(#{starttime},'yyyy-MM-dd HH:mm:ss')]]></if>
         <if test="endtime != null"> <![CDATA[ and createtime <= to_date(#{endtime},'yyyy-MM-dd HH:mm:ss')]]></if>
@@ -40,8 +40,9 @@
         select * from retailer
         where 1=1
         <include refid="query_retailer_where"></include>
-        <if test="startpage != null and pagesize !=null">
-            LIMIT #{startpage},#{pagesize}
+        <if test="startPage != null and pageSize !=null">
+            order by createtime desc
+            LIMIT #{startPage},#{pageSize}
         </if>
     </select>
 

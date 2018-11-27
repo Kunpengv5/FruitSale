@@ -26,7 +26,7 @@
     <sql id="query_retailer_where">
         <if test="name!=null">and name like '%${name}%'</if>
         <if test="address!=null">and address like '%${address}%'</if>
-        <if test="status!=null">and status like '%${status}%'</if>
+        <if test="status!=-1">and status like '%${status}%'</if>
         <if test="telphone!=null">and telphone = #{telphone}</if>
         <if test="createtime!=null">
             and createtime = DATE_FORMAT(#{createtime},'%Y-%m-%d %H:%i:%S')
@@ -66,10 +66,23 @@
         )
     </insert>
 
+    <!--更新-->
     <update id="update" parameterType="RetailerEntity">
-        update retailer set
+        update retailer
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="telphone != null">telphone = #{telphone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        where retailerid = #{retailerid}
     </update>
 
+    <!--删除指定的经销商-->
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from retailer
+        where retailerid = #{retailerid}
+    </delete>
 
 
 

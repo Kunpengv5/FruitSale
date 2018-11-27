@@ -140,6 +140,7 @@
            //修改悬浮窗的值时，将修改的内容取出，显示到要显示的input中
     	   var status = document.getElementById("eStatus").value;
            document.getElementById("eStatus").val=status;
+           document.getElementById("editStatus").value=status;
        }
 
        function deleteRetailer(id,name){

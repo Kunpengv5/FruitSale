@@ -83,7 +83,7 @@ public class RetailerController extends BaseController{
         map.put("address",checkObjectIsEmpty(retailer.getAddress()));
         map.put("telphone",checkObjectIsEmpty(retailer.getTelphone()));
         //status
-        map.put("status",checkObjectIsEmpty(retailer.getStatus()));
+        map.put("status",retailer.getStatus());
         map.put("createtime",checkObjectIsEmpty(retailer.getCreatetime()));
         map.put("startPage",retailer.getStartPage());
         map.put("pageSize",retailer.getPageSize());
@@ -102,10 +102,30 @@ public class RetailerController extends BaseController{
 
     @RequestMapping(value = "/edit")
     public String edit(RetailerEntity retailer,Model model){
-        retailerService.update();
-        return list(retailer,model);
+        //最好验证一下是否为空
+        retailerService.update(retailer);
+        //创建一个新的retailer对象，传值进行查询
+        RetailerEntity queryRetailer = new RetailerEntity();
+        queryRetailer.setCurrentPage(retailer.getCurrentPage());
+        queryRetailer.setPageSize(retailer.getPageSize());
+        queryRetailer.setStartPage(retailer.getStartPage());
+
+        queryRetailer.setStatus(-1);
+        return list(queryRetailer,model);
     }
 
+    @RequestMapping(value = "/delete")
+    public String delete(RetailerEntity retailer,Model model){
+        retailerService.deleteById(retailer.getRetailerid());
+        //创建一个新的retailer对象，传值进行查询
+        RetailerEntity queryRetailer = new RetailerEntity();
+        queryRetailer.setCurrentPage(retailer.getCurrentPage());
+        queryRetailer.setPageSize(retailer.getPageSize());
+        queryRetailer.setStartPage(retailer.getStartPage());
+
+        queryRetailer.setStatus(-1);
+        return list(queryRetailer,model);
+    }
 
     @Test
     public void testDemo(){
@@ -120,12 +140,14 @@ public class RetailerController extends BaseController{
 //        return param==null?null:(param.equals("")?null:"%"+param+"%");
     }
 
-    private Integer checkObjectIsEmpty(Integer param){
+
+
+/*    private Integer checkObjectIsEmpty(Integer param){
         //判断是否为null，如果为null，就是1
         //判断是否为-1
         return param==null?1:(param==-1?1:param);
 //        return param==null?null:(param.equals("")?null:"%"+param+"%");
-    }
+    }*/
 
 
 

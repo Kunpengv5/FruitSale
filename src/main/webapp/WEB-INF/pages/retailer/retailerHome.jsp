@@ -72,32 +72,42 @@
        }
        
        function toLocationPage(){
+           //获取要跳转到的页码
            var pageNumber = document.getElementById("pageNumber").value;
+           //获取当前页码这个对象
            var currentPageObject = document.getElementById("currentPage");
+           //取出当前页码的值
            var currentPage = currentPageObject.value;
+           //进行非空校验
            if(pageNumber==null||pageNumber==""){
                alert("请输入要跳转的页数！");
            }else{
         	   pageNumber = parseInt(pageNumber);
+        	   //取出总页码数
                var sumPage = parseInt(document.getElementById("sumPageNumber").value);
 	           if(pageNumber<1){
 	               alert("数据已到顶！");
 	           }else if(pageNumber>sumPage){
 	               alert("数据已到底！");
 	           }else{
-	               currentPageObject.value = pageNumber;
 	               var pageSize = parseInt(document.getElementById("pageSize").value);
+                   // 取出开始的数据下标，默认进入第一面时为0
                    var startPageObject =document.getElementById("startPage");
-                   if(pageNumber>currentPage){
-                       startPageObject.value = parseInt(startPageObject.value)+pageSize;
+                   // 如果要跳转的页码大于当前页码，逻辑如下【注意：currentPage不同于currentPageObject.value，currentPage为1】
+                   if(pageNumber>=currentPage){
+                       //开始的下标+页码差*每页的条数
+                       startPageObject.value = parseInt(startPageObject.value)+pageSize*(pageNumber-currentPage);
                    }else if(pageNumber<currentPage){
-                       startPageObject.value = parseInt(startPageObject.value)-pageSize;
+                       startPageObject.value = parseInt(startPageObject.value)-pageSize*(currentPage-pageNumber);
                    }
+                   // 变更当前页码对象的值为要跳转到的页面，相当于公共的变量值，以后后续使用
+                   currentPageObject.value = pageNumber;
 	               document.getElementById("listForm").submit();
 	           }
            }
        }
-       
+
+       //编辑经销商的信息，成功后弹出编辑窗口
        function editRetailer(id){
              var message="{'id':'"+id+"'}";
        		 $.ajax({  
@@ -127,8 +137,9 @@
        }
 
        function changeEditStatus(){
-    	   var status = document.getElementById("editStatus").value;
-           document.getElementById("eStatus").value=status;
+           //修改悬浮窗的值时，将修改的内容取出，显示到要显示的input中
+    	   var status = document.getElementById("eStatus").value;
+           document.getElementById("eStatus").val=status;
        }
 
        function deleteRetailer(id,name){
@@ -189,6 +200,7 @@
 	     </form>
 	    </div>
    </div>
+	  <%--修改经销商信息的窗口--%>
    <div class="mask">
 	   <div class="c">
 	     <div style="background-color:#173e65;height:20px;color:#fff;font-size:12px;padding-left:7px;">

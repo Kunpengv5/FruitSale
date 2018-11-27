@@ -14,6 +14,9 @@ public class PageEntity {
     private Integer pageSize;
 
     public Integer getCurrentPage() {
+        if(currentPage==null){
+            currentPage = 1;
+        }
         return currentPage;
     }
 
@@ -34,7 +37,7 @@ public class PageEntity {
 
     public Integer getPageSize() {
         if (pageSize==null){
-            pageSize=10;
+            pageSize=5;
         }
         return pageSize;
     }

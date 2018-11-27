@@ -1,5 +1,6 @@
 package com.fruitsalesplatform.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fruitsalesplatform.entity.RetailerEntity;
 import com.fruitsalesplatform.service.RetailerService;
 import org.junit.Test;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,6 +89,21 @@ public class RetailerController extends BaseController{
         map.put("pageSize",retailer.getPageSize());
 
         return map;
+    }
+
+    //@ResponseBody使用此注解之后，不会再走视图处理器，而是直接将数据写入HTTP 响应正文（ResponseBody）中
+    //@RequestBody 将 HTTP 请求正文插入方法中，使用适合的 HttpMessageConverter 将请求体写入某个对象
+    @RequestMapping(value = "/editRetailer")
+    @ResponseBody
+    public RetailerEntity editRetailer(@RequestBody String json){
+        String id = JSONObject.parseObject(json).getString("id");
+        return retailerService.get(id);
+    }
+
+    @RequestMapping(value = "/edit")
+    public String edit(RetailerEntity retailer,Model model){
+        retailerService.update();
+        return list(retailer,model);
     }
 
 
